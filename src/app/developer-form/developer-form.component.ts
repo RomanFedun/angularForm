@@ -5,6 +5,7 @@ import { PICK_FORMATS, PickDateAdapter } from "../helpers/date-adapter";
 import { distinctUntilKeyChanged, map, Subscription } from "rxjs";
 import { UserService } from "../services/user.service";
 import { CustomValidators } from "../helpers/custom-validators";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-developer-form',
@@ -86,7 +87,10 @@ export class DeveloperFormComponent extends PickDateAdapter implements OnDestroy
   }
 
   onSubmit() {
-    console.log('send', this.form.value);
+    this.form.get('dateOfBirth')?.setValue(moment(this.form.value.dateOfBirth).format('DD-MM-YYYY'));
+
+    console.log('send', this.form.value); // value for request
+
     this.form.reset()
   }
 }
