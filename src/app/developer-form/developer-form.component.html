@@ -1,0 +1,92 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label for="first-name">
+      <span>* </span>First Name:
+    </label>
+    <input type="text" id="first-name" formControlName="firstName">
+    <span class="warning" *ngIf="form.get('firstName')?.hasError('required') && form.controls['firstName']?.touched">
+      Field required
+    </span>
+
+    <label for="last-name">
+      <span>* </span>Last Name:
+    </label>
+    <input type="text" id="last-name" formControlName="lastName">
+    <span class="warning" *ngIf="form.get('lastName')?.hasError('required') && form.controls['lastName']?.touched">
+      Field required
+    </span>
+
+    <label class="date-picker"><span>* </span>Your birthday:</label>
+    <input
+      matInput
+      readonly
+      [min]="minDate"
+      [max]="maxDate"
+      [matDatepicker]="picker"
+      id="picker"
+      formControlName="dateOfBirth"
+    >
+    <div>
+      <mat-hint>DD-MM-YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </div>
+    <span class="warning" *ngIf="form.get('dateOfBirth')?.hasError('required') && form.controls['dateOfBirth']?.touched">
+      Field required
+    </span>
+
+    <label for="framework"><span>* </span>Choose technology:</label>
+    <select id="framework" formControlName="framework">
+      <option></option>
+      <option *ngFor="let framework of frameworks">{{framework}}</option>
+    </select>
+    <span class="warning" *ngIf="form.get('framework')?.hasError('required') && form.controls['framework']?.touched">
+      Field required
+    </span>
+
+    <label for="version"><span>* </span>Framework version:</label>
+    <select id="version" formControlName="frameworkVersion">
+      <option></option>
+      <option *ngFor="let version of frameworkVersions">{{version}}</option>
+    </select>
+    <span class="warning" *ngIf="form.get('frameworkVersion')?.hasError('required') && form.controls['frameworkVersion']?.touched">
+      Field required
+    </span>
+
+    <label for="email"><span>* </span>Email:</label>
+    <input type="email" id="email" formControlName="email">
+    <span class="warning" *ngIf="form.get('email')?.hasError('emailAlreadyExists')">
+      Email already exists
+    </span>
+    <span class="warning" *ngIf="form.get('email')?.hasError('email')">
+      Should be email
+    </span>
+    <span class="warning" *ngIf="form.get('email')?.hasError('required') && form.controls['email']?.touched">
+      Field required
+    </span>
+
+    <div formArrayName="hobby">
+      <h3>Add hobby</h3>
+      <ng-container *ngFor="let hobby of hobbies.controls; let i = index" [formGroupName]="i">
+        <div class="hobby">
+          <p>Hobby - {{i + 1}}</p>
+          <label class="hobby" for="name{{i}}"><span>* </span>name:</label>
+          <input id="name{{i}}" type="text" formControlName="name">
+          <span class="warning" *ngIf="hobby.get('name')?.hasError('required') && hobby.get('name')?.touched">
+          Field required
+          </span>
+          <label class="hobby" for="duration{{i}}"><span>* </span>duration:</label>
+          <input id="duration{{i}}" type="text" formControlName="duration">
+          <span class="warning" *ngIf="hobby.get('duration')?.hasError('required') && hobby.get('duration')?.touched">
+          Field required
+          </span>
+        </div>
+        <div class="wrapper">
+          <button class="add-btn" type="button" (click)="addHobby()">+ Add another hobby</button>
+          <button *ngIf="i > 0" class="add-btn" type="button" (click)="deleteHobby(i)">- delete hobby</button>
+        </div>
+      </ng-container>
+    </div>
+    <button type="submit" class="submit" [disabled]="form.invalid">Submit</button>
+  </form>
+</div>
